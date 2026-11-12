@@ -24,8 +24,9 @@ Other scripts:
 npm run build
 npm run start
 npm run lint
-npm run verify:flow      # requires the dev server on :3000
-npm run verify:branding  # logo + theme colors at 375px and 1440px
+npm run verify:flow           # requires the dev server on :3000
+npm run verify:branding       # logo + theme colors at 375px and 1440px
+npm run verify:logo-fallback  # simulates logo load failure; text-only home link
 ```
 
 Capture/video scripts write to `ARTIFACTS_DIR` when set. Otherwise they use `/opt/cursor/artifacts` if that folder exists, or `./artifacts` locally:

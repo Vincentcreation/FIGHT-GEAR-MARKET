@@ -167,17 +167,6 @@ select {
   font-weight: 700;
 }
 
-.brand-mark__note {
-  margin-top: 0.25rem;
-  font-size: 0.68rem;
-  line-height: 1.3;
-  color: var(--warm-gray);
-}
-
-.brand-mark__note code {
-  font-size: 0.66rem;
-}
-
 .menu-toggle {
   display: none;
   min-height: 2.4rem;

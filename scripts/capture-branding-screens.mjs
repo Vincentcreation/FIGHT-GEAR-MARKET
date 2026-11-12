@@ -59,7 +59,7 @@ async function assertLogoVisible(page, label) {
     `${label}: fallback should show Fight Gear Market home link text`,
   );
   console.warn(
-    `${label}: logo missing in UI; fallback shown. Expected file: public/branding/fgm-logo.png`,
+    `${label}: logo missing in UI; text fallback shown. Expected PNG for diagnostics: public/branding/fgm-logo.png`,
   );
   return "fallback";
 }

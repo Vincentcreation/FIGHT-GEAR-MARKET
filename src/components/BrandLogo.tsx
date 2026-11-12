@@ -21,9 +21,6 @@ export function BrandLogo({ className, priority = false }: Props) {
         className={`brand-mark brand-mark--fallback${className ? ` ${className}` : ""}`}
       >
         <span className="brand-mark__word">Fight Gear Market</span>
-        <span className="brand-mark__note">
-          Logo missing — expected at <code>public/branding/fgm-logo.png</code>
-        </span>
       </Link>
     );
   }
