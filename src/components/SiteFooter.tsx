@@ -7,7 +7,7 @@ export function SiteFooter() {
         <div>
           <p className="site-footer__name">Fight Gear Market</p>
           <p className="site-footer__note">
-            Étape 1 local demo. One brand per simulated order.
+            Local demo. One brand per simulated order.
           </p>
         </div>
         <div className="site-footer__links">

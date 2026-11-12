@@ -24,8 +24,18 @@ Other scripts:
 npm run build
 npm run start
 npm run lint
-npm run verify:flow   # requires the dev server on :3000
+npm run verify:flow      # requires the dev server on :3000
+npm run verify:branding  # logo + theme colors at 375px and 1440px
 ```
+
+Capture/video scripts write to `ARTIFACTS_DIR` when set. Otherwise they use `/opt/cursor/artifacts` if that folder exists, or `./artifacts` locally:
+
+```bash
+ARTIFACTS_DIR=./artifacts npm run verify:branding
+ARTIFACTS_DIR=./artifacts node scripts/record-purchase-flow.mjs
+```
+
+Optional scratch dir override: `OUTPUT_DIR=/tmp/fgm-work`.
 
 ## Demo catalog
 

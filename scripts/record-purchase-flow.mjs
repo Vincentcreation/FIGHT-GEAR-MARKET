@@ -1,9 +1,11 @@
 import { chromium } from "playwright";
-import { mkdirSync } from "fs";
+import { copyFileSync, readdirSync } from "fs";
+import path from "path";
+import { ensureDir, resolveArtifactsDir, resolveWorkDir } from "./lib/paths.mjs";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const outDir = "/tmp/fgm-video";
-mkdirSync(outDir, { recursive: true });
+const artifactsDir = ensureDir(resolveArtifactsDir());
+const outDir = ensureDir(resolveWorkDir("video", artifactsDir));
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({
@@ -59,13 +61,12 @@ await pause(1500);
 await context.close();
 await browser.close();
 
-const { readdirSync, copyFileSync } = await import("fs");
 const files = readdirSync(outDir).filter((name) => name.endsWith(".webm"));
 if (!files.length) {
   console.error("No video recorded");
   process.exit(1);
 }
-const source = `${outDir}/${files[0]}`;
-const target = "/opt/cursor/artifacts/purchase_flow_demo.webm";
+const source = path.join(outDir, files[0]);
+const target = path.join(artifactsDir, "purchase_flow_demo.webm");
 copyFileSync(source, target);
 console.log(`Saved ${target}`);

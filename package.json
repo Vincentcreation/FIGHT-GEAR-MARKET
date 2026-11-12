@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "verify:flow": "node scripts/verify-purchase-flow.mjs"
+    "verify:flow": "node scripts/verify-purchase-flow.mjs",
+    "verify:branding": "node scripts/capture-branding-screens.mjs"
   },
   "dependencies": {
     "next": "15.5.29",
