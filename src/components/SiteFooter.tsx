@@ -4,9 +4,12 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
-        <p>
-          Fight Gear Market — étape 1 local demo. One brand per simulated order.
-        </p>
+        <div>
+          <p className="site-footer__name">Fight Gear Market</p>
+          <p className="site-footer__note">
+            Étape 1 local demo. One brand per simulated order.
+          </p>
+        </div>
         <div className="site-footer__links">
           <Link href="/catalog">Browse catalog</Link>
           <Link href="/commission">Commission calculator</Link>

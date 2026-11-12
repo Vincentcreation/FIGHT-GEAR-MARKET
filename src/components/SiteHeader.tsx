@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
 import { useMarketplace } from "@/context/MarketplaceContext";
 
 const links = [
@@ -12,24 +14,44 @@ const links = [
 export function SiteHeader() {
   const pathname = usePathname();
   const { itemCount, hydrated } = useMarketplace();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link href="/" className="brand-mark">
-          <span className="brand-mark__word">Fight Gear</span>
-          <span className="brand-mark__market">Market</span>
-        </Link>
-        <nav className="site-nav" aria-label="Primary">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={pathname.startsWith(link.href) ? "is-active" : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <BrandLogo priority className="site-header__logo" />
+
+        <div className="site-header__actions">
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="site-nav"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            Menu
+          </button>
+
+          <nav
+            id="site-nav"
+            className={`site-nav${menuOpen ? " is-open" : ""}`}
+            aria-label="Primary"
+          >
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={pathname.startsWith(link.href) ? "is-active" : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
           <Link
             href="/cart"
             className={`cart-link${pathname.startsWith("/cart") ? " is-active" : ""}`}
@@ -39,7 +61,7 @@ export function SiteHeader() {
               {hydrated ? itemCount : 0}
             </span>
           </Link>
-        </nav>
+        </div>
       </div>
     </header>
   );

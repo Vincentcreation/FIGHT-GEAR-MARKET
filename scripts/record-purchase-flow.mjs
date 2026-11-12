@@ -59,7 +59,7 @@ await pause(1500);
 await context.close();
 await browser.close();
 
-const { readdirSync, copyFileSync, renameSync } = await import("fs");
+const { readdirSync, copyFileSync } = await import("fs");
 const files = readdirSync(outDir).filter((name) => name.endsWith(".webm"));
 if (!files.length) {
   console.error("No video recorded");

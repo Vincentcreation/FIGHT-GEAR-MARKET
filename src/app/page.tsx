@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ProductCard } from "@/components/ProductCard";
@@ -10,10 +11,14 @@ export default function HomePage() {
     <>
       <section className="hero" aria-label="Fight Gear Market hero">
         <div className="hero__inner">
-          <p className="hero__brand">
-            Fight Gear
-            <span>Market</span>
-          </p>
+          <Image
+            src="/branding/fgm-logo.png"
+            alt="Fight Gear Market"
+            width={2172}
+            height={724}
+            className="hero__logo"
+            priority
+          />
           <h1>Thai Muay Thai brands in one English storefront.</h1>
           <p>
             Browse gloves, shorts, and hand wraps from three fictional suppliers.
