@@ -973,6 +973,100 @@ select {
   }
 }
 
+.portal-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.account-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.15rem;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: inherit;
+  cursor: pointer;
+}
+
+.account-card h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--charcoal);
+}
+
+.account-card:hover {
+  border-color: color-mix(in srgb, var(--brick) 45%, transparent);
+}
+
+.portal-form {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.15rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.portal-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+.portal-form input,
+.portal-form textarea,
+.portal-form select {
+  width: 100%;
+  max-width: none;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--charcoal);
+  font: inherit;
+}
+
+.portal-form textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.listing-table {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.listing-table li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 860px) {
+  .listing-table li {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
 @media (max-width: 420px) {
   .brand-logo {
     max-width: min(148px, 40vw);
