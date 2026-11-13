@@ -190,51 +190,49 @@ export function PortalProvider({ children }: { children: ReactNode }) {
 
   const submitForReview = useCallback(
     (id: string) => {
-      let updated: PortalListing | null = null;
+      if (account?.role !== "supplier" || !account.brandId) return null;
+
+      const current = listings.find((listing) => listing.id === id);
+      if (!current) return null;
+      if (!canManageListing(account, current)) return null;
+      if (current.status !== "draft" && current.status !== "rejected") return null;
+
+      const now = new Date().toISOString();
+      const updated: PortalListing = {
+        ...current,
+        status: "pending_review",
+        submittedAt: now,
+        updatedAt: now,
+        reviewNote: undefined,
+      };
       setListings((prev) =>
-        prev.map((listing) => {
-          if (listing.id !== id) return listing;
-          if (!canManageListing(account, listing)) return listing;
-          if (account?.role !== "supplier") return listing;
-          if (listing.status !== "draft" && listing.status !== "rejected") return listing;
-          const now = new Date().toISOString();
-          updated = {
-            ...listing,
-            status: "pending_review",
-            submittedAt: now,
-            updatedAt: now,
-            reviewNote: undefined,
-          };
-          return updated;
-        }),
+        prev.map((listing) => (listing.id === id ? updated : listing)),
       );
       return updated;
     },
-    [account],
+    [account, listings],
   );
 
   const reviewListing = useCallback(
     (id: string, decision: Extract<ListingStatus, "published" | "rejected">, note?: string) => {
       if (account?.role !== "admin") return null;
-      let updated: PortalListing | null = null;
+      const current = listings.find((listing) => listing.id === id);
+      if (!current || current.status !== "pending_review") return null;
+
+      const now = new Date().toISOString();
+      const updated: PortalListing = {
+        ...current,
+        status: decision,
+        reviewedAt: now,
+        updatedAt: now,
+        reviewNote: note?.trim() || undefined,
+      };
       setListings((prev) =>
-        prev.map((listing) => {
-          if (listing.id !== id) return listing;
-          if (listing.status !== "pending_review") return listing;
-          const now = new Date().toISOString();
-          updated = {
-            ...listing,
-            status: decision,
-            reviewedAt: now,
-            updatedAt: now,
-            reviewNote: note?.trim() || undefined,
-          };
-          return updated;
-        }),
+        prev.map((listing) => (listing.id === id ? updated : listing)),
       );
       return updated;
     },
-    [account],
+    [account, listings],
   );
 
   const getListing = useCallback(

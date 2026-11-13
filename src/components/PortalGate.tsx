@@ -19,7 +19,7 @@ export function PortalGate({
     return <p className="muted">Loading portal…</p>;
   }
 
-  if (!account || !allowed.includes(account.role)) {
+  if (!account) {
     return (
       <div className="empty-state">
         <h1>Sign in required</h1>
@@ -30,6 +30,21 @@ export function PortalGate({
         </p>
         <Link href="/portal" className="btn btn-primary">
           Open portal sign-in
+        </Link>
+      </div>
+    );
+  }
+
+  if (!allowed.includes(account.role)) {
+    return (
+      <div className="empty-state">
+        <h1>Access denied</h1>
+        <p>
+          Signed in as {account.name}. This page is limited to{" "}
+          {allowed.join(" or ")} accounts.
+        </p>
+        <Link href="/portal" className="btn btn-primary">
+          Switch account
         </Link>
       </div>
     );

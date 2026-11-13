@@ -58,18 +58,27 @@ function SupplierListingEditor() {
   }
 
   function onSubmit() {
+    setMessage(null);
     const updated = submitForReview(listing!.id);
     if (!updated) {
       setMessage("Could not submit this listing.");
       return;
     }
-    setMessage("Submitted for admin review.");
+    if (updated.status === "pending_review") {
+      setMessage("Submitted for admin review.");
+      return;
+    }
+    setMessage(
+      `Submit did not reach review. Current status: ${LISTING_STATUS_LABELS[updated.status]}.`,
+    );
   }
 
   return (
-    <div className="portal-page">
+    <div className="portal-page" data-listing-status={listing.status}>
       <header className="page-intro">
-        <p className="eyebrow">{LISTING_STATUS_LABELS[listing.status]}</p>
+        <p className="eyebrow" data-testid="listing-status">
+          {LISTING_STATUS_LABELS[listing.status]}
+        </p>
         <h1>{listing.name}</h1>
         <p>
           {editable
@@ -140,7 +149,7 @@ function SupplierListingEditor() {
       </section>
 
       {listing.reviewNote ? (
-        <aside className="callout" role="note">
+        <aside className="callout" role="note" data-testid="admin-note">
           Admin note: {listing.reviewNote}
         </aside>
       ) : null}
@@ -160,7 +169,11 @@ function SupplierListingEditor() {
           Back
         </Link>
       </div>
-      {message ? <p className="form-feedback">{message}</p> : null}
+      {message ? (
+        <p className="form-feedback" role="status" data-testid="listing-feedback">
+          {message}
+        </p>
+      ) : null}
     </div>
   );
 }
