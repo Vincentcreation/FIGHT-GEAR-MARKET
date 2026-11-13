@@ -21,7 +21,7 @@ const body = Manrope({
 export const metadata: Metadata = {
   title: "Fight Gear Market",
   description:
-    "Local marketplace demo for Thai Muay Thai gear brands — fake catalog, cart, and commission simulation.",
+    "Explore a demo marketplace for martial arts equipment and apparel, starting with Muay Thai gloves, shorts, and hand wraps.",
 };
 
 export default function RootLayout({
