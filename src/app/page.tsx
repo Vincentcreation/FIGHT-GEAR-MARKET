@@ -19,11 +19,11 @@ export default function HomePage() {
             className="hero__logo"
             priority
           />
-          <h1>Thai Muay Thai brands in one English storefront.</h1>
+          <h1>Fight gear for every discipline.</h1>
           <p>
-            Browse gloves, shorts, and hand wraps from three fictional suppliers.
-            Filter the catalog, pick a variant, and simulate one-brand orders with
-            a configurable demo commission.
+            A marketplace for martial arts equipment and apparel, from striking
+            to grappling. Our first collection features Muay Thai gloves,
+            shorts, and hand wraps.
           </p>
           <div className="hero__actions">
             <Link href="/catalog" className="btn btn-primary">

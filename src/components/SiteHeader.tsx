@@ -5,20 +5,30 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useMarketplace } from "@/context/MarketplaceContext";
+import { usePortal } from "@/context/PortalContext";
 
 const links = [
   { href: "/catalog", label: "Catalog" },
   { href: "/commission", label: "Commission" },
+  { href: "/portal", label: "Portal" },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { itemCount, hydrated } = useMarketplace();
+  const { account } = usePortal();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
+
+  const portalHref =
+    account?.role === "admin"
+      ? "/admin"
+      : account?.role === "supplier"
+        ? "/supplier"
+        : "/portal";
 
   return (
     <header className="site-header">
@@ -41,15 +51,24 @@ export function SiteHeader() {
             className={`site-nav${menuOpen ? " is-open" : ""}`}
             aria-label="Primary"
           >
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={pathname.startsWith(link.href) ? "is-active" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const href = link.href === "/portal" ? portalHref : link.href;
+              const active =
+                link.href === "/portal"
+                  ? pathname.startsWith("/portal") ||
+                    pathname.startsWith("/supplier") ||
+                    pathname.startsWith("/admin")
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={href}
+                  className={active ? "is-active" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <Link

@@ -4,6 +4,7 @@ import { DemoBanner } from "@/components/DemoBanner";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { MarketplaceProvider } from "@/context/MarketplaceContext";
+import { PortalProvider } from "@/context/PortalContext";
 import "./globals.css";
 
 const display = Bebas_Neue({
@@ -20,7 +21,7 @@ const body = Manrope({
 export const metadata: Metadata = {
   title: "Fight Gear Market",
   description:
-    "Local marketplace demo for Thai Muay Thai gear brands — fake catalog, cart, and commission simulation.",
+    "Explore a demo marketplace for martial arts equipment and apparel, starting with Muay Thai gloves, shorts, and hand wraps.",
 };
 
 export default function RootLayout({
@@ -31,14 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${display.variable} ${body.variable} antialiased`}>
-        <MarketplaceProvider>
-          <div className="shell">
-            <DemoBanner />
-            <SiteHeader />
-            <main className="shell__content">{children}</main>
-            <SiteFooter />
-          </div>
-        </MarketplaceProvider>
+        <PortalProvider>
+          <MarketplaceProvider>
+            <div className="shell">
+              <DemoBanner />
+              <SiteHeader />
+              <main className="shell__content">{children}</main>
+              <SiteFooter />
+            </div>
+          </MarketplaceProvider>
+        </PortalProvider>
       </body>
     </html>
   );

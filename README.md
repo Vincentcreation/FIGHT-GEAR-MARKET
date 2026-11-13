@@ -69,6 +69,21 @@ Expected rules:
 - Seller amount before fees = items subtotal − commission
 - Orders and cart state persist in the browser only
 
+## Supplier portal (first path)
+
+Local demo accounts (no Supabase yet):
+
+1. Open `/portal` and sign in as **Nak Muay Forge supplier**.
+2. Create a product draft, then **Submit for review**.
+3. Sign out, return to `/portal`, sign in as **Marketplace Admin**.
+4. **Approve** the pending listing.
+5. Open `/catalog` and confirm the new product appears.
+6. Optional isolation check: sign in as **Siam Strike Co. supplier** and confirm you cannot open the other brand’s listing.
+
+```bash
+npm run verify:supplier-flow   # requires the app on :3000
+```
+
 ## Scope note
 
-This repository is independent of ELEVATEFITNESS. Étape 1 is local/demo only.
+This repository is independent of ELEVATEFITNESS. Étape 1 storefront is local/demo. The supplier path above is also local until a dedicated Supabase project is connected.

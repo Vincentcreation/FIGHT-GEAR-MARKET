@@ -9,17 +9,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import {
-  brands,
-  getBrandById,
-  getProductById,
-  getVariant,
-} from "@/data/catalog";
+import { brands, getBrandById, getProductById } from "@/data/catalog";
+import { usePortal } from "@/context/PortalContext";
 import { calcCommission, roundMoney } from "@/lib/money";
 import {
   COMMISSION_RATES,
   DEFAULT_COMMISSION_RATE,
   type CartItem,
+  type Product,
   type SimulatedOrder,
 } from "@/lib/types";
 
@@ -67,10 +64,24 @@ function readJson<T>(key: string, fallback: T): T {
 }
 
 export function MarketplaceProvider({ children }: { children: ReactNode }) {
+  const { catalogProducts } = usePortal();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [commissionRate, setCommissionRateState] = useState(DEFAULT_COMMISSION_RATE);
   const [orders, setOrders] = useState<SimulatedOrder[]>([]);
   const [hydrated, setHydrated] = useState(false);
+
+  const resolveProduct = useCallback(
+    (productId: string): Product | undefined =>
+      catalogProducts.find((product) => product.id === productId) ??
+      getProductById(productId),
+    [catalogProducts],
+  );
+
+  const resolveVariant = useCallback(
+    (productId: string, variantId: string) =>
+      resolveProduct(productId)?.variants.find((variant) => variant.id === variantId),
+    [resolveProduct],
+  );
 
   useEffect(() => {
     const savedCart = readJson<CartItem[]>(CART_KEY, []);
@@ -148,11 +159,14 @@ export function MarketplaceProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const clearBrandFromCart = useCallback((brandId: string) => {
-    setCart((prev) =>
-      prev.filter((item) => getProductById(item.productId)?.brandId !== brandId),
-    );
-  }, []);
+  const clearBrandFromCart = useCallback(
+    (brandId: string) => {
+      setCart((prev) =>
+        prev.filter((item) => resolveProduct(item.productId)?.brandId !== brandId),
+      );
+    },
+    [resolveProduct],
+  );
 
   const brandGroups = useMemo(() => {
     const groups = new Map<
@@ -173,8 +187,8 @@ export function MarketplaceProvider({ children }: { children: ReactNode }) {
     >();
 
     for (const item of cart) {
-      const product = getProductById(item.productId);
-      const variant = getVariant(item.productId, item.variantId);
+      const product = resolveProduct(item.productId);
+      const variant = resolveVariant(item.productId, item.variantId);
       const brand = product ? getBrandById(product.brandId) : undefined;
       if (!product || !variant || !brand) continue;
 
@@ -199,7 +213,7 @@ export function MarketplaceProvider({ children }: { children: ReactNode }) {
     return Array.from(groups.values()).sort((a, b) =>
       a.brandName.localeCompare(b.brandName),
     );
-  }, [cart]);
+  }, [cart, resolveProduct, resolveVariant]);
 
   const cartSubtotalUsd = useMemo(
     () => roundMoney(brandGroups.reduce((sum, group) => sum + group.subtotalUsd, 0)),
